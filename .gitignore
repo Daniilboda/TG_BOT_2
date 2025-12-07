@@ -1,0 +1,15 @@
+# Виртуальное окружение
+venv/
+
+# Файлы с токенами и секретами
+../TG_BOT_2_WEATHER/.env
+AUTH_DATA_WEATHER.py
+Config_OPEN_WEATHER.py
+
+# IDE файлы
+.idea/
+*.iml
+
+# Python кеш
+__pycache__/
+*.pyc

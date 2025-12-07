@@ -1,0 +1,8 @@
+
+2025-12-07 03:38:24,211 - ERROR - 'tempo'
+Traceback (most recent call last):
+  File "C:\Users\Daniil\IdeaProjects\TG_BOT_2\TG_BOT2.py", line 146, in send_txt
+    cur_weather = data['main']['tempo']
+                  ~~~~~~~~~~~~^^^^^^^^^
+KeyError: 'tempo'
+2025-12-07 03:38:24,214 - INFO - https://api.openweathermap.org/data/2.5/weather?q=Paris&appid=d63066080cc7501c4d3f48c8e1e24d29&units=metric
