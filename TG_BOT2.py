@@ -46,10 +46,12 @@ def clear_users():
 
 def telegram_bot(TOKEN_WEATHER_BOT):
     bot = telebot.TeleBot(TOKEN_WEATHER_BOT)
+
     @bot.message_handler(commands=['start'])
     def hello(message):
         add_user(message.chat.id)
         bot.send_message(message.chat.id,"Привет! Напиши название города в котором ты хочешь узнать погоду!")
+
     @bot.message_handler(commands=['help'])
     def help(message):
         bot.send_message(message.chat.id,"По всем вопросам: @daniilboda")
@@ -57,17 +59,42 @@ def telegram_bot(TOKEN_WEATHER_BOT):
     @bot.message_handler(commands=['info'])
     def info(message):
         bot.send_message(message.chat.id, "Новые боты скоро будут...")
+
     @bot.message_handler(commands=['clean_my_table'])
     def clean_my_table(message):
-        if str(message.chat.id) == os.getenv('MY_ID'):
-            clear_users()
-            res = count_users()
-            bot.send_message(message.chat.id, f'Результат очистки: {res}')
+        if str(message.chat.id) != os.getenv('MY_ID'):
+            return
+        clear_users()
+        res = count_users()
+        bot.send_message(message.chat.id, f'Результат очистки: {res}')
+
     @bot.message_handler(commands=['count_users'])
     def count(message):
-        if str(message.chat.id) == os.getenv('MY_ID'):
-            res = count_users()
-            bot.send_message(message.chat.id, f'Запускали: {res}')
+        if str(message.chat.id) != os.getenv('MY_ID'):
+            return
+        res = count_users()
+        bot.send_message(message.chat.id, f'Запускали: {res}')
+
+    @bot.message_handler(commands=['get_logs'])
+    def get_logs(message):
+        if str(message.chat.id) != os.getenv('MY_ID'):
+            return
+        try:
+            with open("weather_bot.log", "r", encoding="utf-8") as f:
+                logs = f.read()
+                bot.send_message(message.chat.id, logs)
+        except Exception as e:
+            bot.send_message(message.chat.id, f"Ошибка при чтении логов: {e}")
+    @bot.message_handler(commands=['clean_logs'])
+    def clean_logs(message):
+        if str(message.chat.id) != os.getenv('MY_ID'):
+            return
+        try:
+            open("weather_bot.log", "w", encoding="utf-8").close()
+            bot.send_message(message.chat.id, "Логи очищены")
+        except Exception as e:
+            bot.send_message(message.chat.id, f"Ошибка при очистке логов: {e}")
+
     @bot.message_handler(content_types=['text'])
     def send_txt(message):
         city = message.text.lower()
